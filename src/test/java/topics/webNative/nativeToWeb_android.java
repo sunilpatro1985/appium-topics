@@ -1,5 +1,5 @@
 
-  package topics;
+  package topics.webNative;
 
 import base.AppiumServer;
 import io.appium.java_client.AppiumBy;

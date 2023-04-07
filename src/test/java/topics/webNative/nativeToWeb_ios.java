@@ -1,5 +1,5 @@
 
-  package topics;
+  package topics.webNative;
 
 import base.AppiumServer;
 import io.appium.java_client.AppiumBy;
@@ -13,7 +13,7 @@ import java.net.URL;
 import java.util.HashSet;
 import java.util.Set;
 
-public class nativeToWeb {
+public class nativeToWeb_ios {
 
 
     @Test
