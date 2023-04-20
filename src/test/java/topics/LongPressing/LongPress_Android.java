@@ -7,11 +7,15 @@ import io.appium.java_client.AppiumBy;
 import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.android.options.UiAutomator2Options;
 import org.openqa.selenium.WebElement;
+import org.testng.annotations.Test;
 
 import java.net.MalformedURLException;
 
 public class LongPress_Android {
-    public static void main(String[] args) throws InterruptedException, MalformedURLException, MalformedURLException {
+
+    @Test
+    //public static void main(String[] args) throws InterruptedException, MalformedURLException, MalformedURLException {
+    public static void LP_Test() throws InterruptedException, MalformedURLException, MalformedURLException {
         UiAutomator2Options options = new UiAutomator2Options()
                 .setDeviceName("emulator-5554")
                 .setPlatformVersion("12.0")
