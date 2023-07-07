@@ -1,14 +1,18 @@
 package topics.scrolling;
 
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableMap;
 import io.appium.java_client.AppiumBy;
 import io.appium.java_client.AppiumDriver;
+import io.appium.java_client.android.AndroidDriver;
 import io.appium.java_client.android.options.UiAutomator2Options;
 import io.appium.java_client.ios.IOSDriver;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.Point;
 import org.openqa.selenium.interactions.PointerInput;
 import org.openqa.selenium.interactions.Sequence;
+import org.openqa.selenium.remote.RemoteWebElement;
+import org.testng.annotations.Test;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -17,6 +21,38 @@ import java.time.Duration;
 public class scroll_Android_Sequence {
 
     static AppiumDriver driver;
+
+
+    @Test
+    public static void testGesturePluginSwipe() throws InterruptedException, MalformedURLException, MalformedURLException {
+
+        UiAutomator2Options options = new UiAutomator2Options();
+        options.setDeviceName("emulator-5554")
+                .setPlatformVersion("13.0")
+                //.setAppPackage("com.saucelabs.mydemoapp.rn")
+                //.setAppActivity(".MainActivity");
+
+                .setAppPackage("com.wdiodemoapp")
+                .setAppActivity("com.wdiodemoapp.MainActivity");
+        driver = new AndroidDriver(new URL("http://0.0.0.0:4723"), options);
+        Thread.sleep(1000);
+
+        driver.findElement(AppiumBy.accessibilityId("Swipe")).click();
+        Thread.sleep(2000);
+
+        RemoteWebElement vertSlider = (RemoteWebElement) driver.findElement(AppiumBy.accessibilityId("Swipe-screen"));
+        RemoteWebElement horigSlider = (RemoteWebElement) driver.findElement(AppiumBy.accessibilityId("Carousel"));
+
+        driver.executeScript("gesture: swipe", ImmutableMap.of("elementId", horigSlider.getId(), "percentage", 50, "direction", "left"));
+
+        Thread.sleep(2000);
+        driver.executeScript("gesture: swipe", ImmutableMap.of("elementId", vertSlider.getId(), "percentage", 50, "direction", "up"));
+
+        Thread.sleep(2000);
+        driver.quit();
+
+
+    }
 
 
     public static void main(String[] args) throws InterruptedException, MalformedURLException, MalformedURLException {
@@ -29,7 +65,7 @@ public class scroll_Android_Sequence {
 
                 .setAppPackage("com.wdiodemoapp")
                 .setAppActivity("com.wdiodemoapp.MainActivity");
-        driver = new IOSDriver(new URL("http://0.0.0.0:4723"), options);
+        driver = new AndroidDriver(new URL("http://0.0.0.0:4723"), options);
 
         driver.findElement(AppiumBy.accessibilityId("Swipe")).click();
         Thread.sleep(2000);

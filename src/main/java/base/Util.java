@@ -1,13 +1,13 @@
 package base;
 
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableMap;
 import io.appium.java_client.AppiumDriver;
-import org.openqa.selenium.By;
-import org.openqa.selenium.Dimension;
-import org.openqa.selenium.Point;
-import org.openqa.selenium.WebElement;
+import io.appium.java_client.android.AndroidDriver;
+import org.openqa.selenium.*;
 import org.openqa.selenium.interactions.PointerInput;
 import org.openqa.selenium.interactions.Sequence;
+import org.openqa.selenium.remote.RemoteWebElement;
 
 import java.time.Duration;
 
@@ -123,5 +123,13 @@ public class Util {
         swipe.addAction(input.createPointerMove(Duration.ofSeconds(1), PointerInput.Origin.viewport(), location.x, location.y));
         swipe.addAction(input.createPointerUp(PointerInput.MouseButton.LEFT.asArg()));
         ((AppiumDriver) AppDriver.getDriver()).perform(ImmutableList.of(swipe));
+    }
+
+    public static void longPress_gesturePlugin(WebElement el) {
+        ((JavascriptExecutor)AppDriver.getDriver()).executeScript("gesture: longPress", ImmutableMap.of("elementId", ((RemoteWebElement)el).getId(), "pressure", 0.5, "duration", 800));
+    }
+
+    public static void swipe_gesturePlugin(WebElement el, String direction) {
+        ((JavascriptExecutor)AppDriver.getDriver()).executeScript("gesture: swipe", ImmutableMap.of("elementId", ((RemoteWebElement)el).getId(), "percentage", 50, "direction", direction));
     }
 }
