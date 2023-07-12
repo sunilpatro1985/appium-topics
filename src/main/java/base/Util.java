@@ -13,23 +13,24 @@ import java.time.Duration;
 
 public class Util {
     static double SCROLL_RATIO = 0.5;
+    static Duration SCROLL_DUR = Duration.ofMillis(500);
 
     public static void scrollNclick(By listItems, String attrName, String text) throws InterruptedException {
         String prevPageSource = "";
         boolean flag = false;
 
-        while(!isEndOfPage(prevPageSource)){
+        while (!isEndOfPage(prevPageSource)) {
             prevPageSource = AppDriver.getDriver().getPageSource();
 
-            for(WebElement el: AppDriver.getDriver().findElements(listItems)){
+            for (WebElement el : AppDriver.getDriver().findElements(listItems)) {
 
-                if(el.getAttribute(attrName).equalsIgnoreCase(text)){
+                if (el.getAttribute(attrName).equalsIgnoreCase(text)) {
                     el.click();
-                    flag=true; //come out of the for loop
+                    flag = true; //come out of the for loop
                     break;
                 }
             }
-            if(flag)
+            if (flag)
                 break; //come out of the while loop
             else {
                 scroll(ScrollDirection.DOWN, Util.SCROLL_RATIO);
@@ -40,23 +41,23 @@ public class Util {
 
     }
 
-    public static void scrollNclick(By byEl){
+    public static void scrollNclick(By byEl) {
         String prevPageSource = "";
         boolean flag = false;
 
-        while(!isEndOfPage(prevPageSource)) {
+        while (!isEndOfPage(prevPageSource)) {
             prevPageSource = AppDriver.getDriver().getPageSource();
 
-            try{
+            try {
                 AppDriver.getDriver().findElement(byEl).click();
-            }catch(org.openqa.selenium.NoSuchElementException e){
+            } catch (org.openqa.selenium.NoSuchElementException e) {
                 scroll(ScrollDirection.DOWN, Util.SCROLL_RATIO);
             }
         }
 
     }
 
-    public static boolean isEndOfPage(String pageSource){
+    public static boolean isEndOfPage(String pageSource) {
         return pageSource.equals(AppDriver.getDriver().getPageSource());
     }
 
@@ -64,20 +65,20 @@ public class Util {
         UP, DOWN, LEFT, RIGHT
     }
 
-    public static void scroll(ScrollDirection dir, double scrollRatio){
-        Duration SCROLL_DUR = Duration.ofMillis(300);
+    public static void scroll(ScrollDirection dir, double scrollRatio) {
+
         if (scrollRatio < 0 || scrollRatio > 1) {
             throw new Error("Scroll distance must be between 0 and 1");
         }
         Dimension size = AppDriver.getDriver().manage().window().getSize();
         System.out.println(size);
-        Point midPoint = new Point((int)(size.width * 0.5),(int)(size.height * 0.5));
-        int bottom = midPoint.y + (int)(midPoint.y * scrollRatio);
-        int top = midPoint.y - (int)(midPoint.y * scrollRatio);
+        Point midPoint = new Point((int) (size.width * 0.5), (int) (size.height * 0.5));
+        int bottom = midPoint.y + (int) (midPoint.y * scrollRatio);
+        int top = midPoint.y - (int) (midPoint.y * scrollRatio);
         //Point Start = new Point(midPoint.x, bottom );
         //Point End = new Point(midPoint.x, top );
-        int left = midPoint.x - (int)(midPoint.x * scrollRatio);
-        int right = midPoint.x + (int)(midPoint.x * scrollRatio);
+        int left = midPoint.x - (int) (midPoint.x * scrollRatio);
+        int right = midPoint.x + (int) (midPoint.x * scrollRatio);
 
         if (dir == ScrollDirection.UP) {
             swipe(new Point(midPoint.x, top), new Point(midPoint.x, bottom), SCROLL_DUR);
@@ -88,7 +89,6 @@ public class Util {
         } else {
             swipe(new Point(right, midPoint.y), new Point(left, midPoint.y), SCROLL_DUR);
         }
-
 
 
         //Point Start = new Point(Right, midPoint.y );
@@ -126,10 +126,26 @@ public class Util {
     }
 
     public static void longPress_gesturePlugin(WebElement el) {
-        ((JavascriptExecutor)AppDriver.getDriver()).executeScript("gesture: longPress", ImmutableMap.of("elementId", ((RemoteWebElement)el).getId(), "pressure", 0.5, "duration", 800));
+        ((JavascriptExecutor) AppDriver.getDriver()).executeScript("gesture: longPress", ImmutableMap.of("elementId", ((RemoteWebElement) el).getId(), "pressure", 0.5, "duration", 800));
     }
 
     public static void swipe_gesturePlugin(WebElement el, String direction) {
-        ((JavascriptExecutor)AppDriver.getDriver()).executeScript("gesture: swipe", ImmutableMap.of("elementId", ((RemoteWebElement)el).getId(), "percentage", 50, "direction", direction));
+        ((JavascriptExecutor) AppDriver.getDriver()).executeScript("gesture: swipe", ImmutableMap.of("elementId", ((RemoteWebElement) el).getId(), "percentage", 50, "direction", direction));
+    }
+
+    private static Point getCenter(WebElement el) {
+        Point location = el.getLocation();
+        Dimension size = el.getSize();
+        return new Point(location.x + size.getWidth() / 2, location.y + size.getHeight() / 2);
+    }
+
+    public static void dragNDrop(WebElement source, WebElement target) {
+        Point pSourcce = getCenter(source);
+        Point pTarget = getCenter(target);
+        swipe(pSourcce, pTarget, SCROLL_DUR);
+    }
+
+    public static void dragNDrop_gesture(WebElement source, WebElement target) {
+        ((JavascriptExecutor) AppDriver.getDriver()).executeScript("gesture: dragAndDrop", ImmutableMap.of("sourceId", ((RemoteWebElement) source).getId(), "destinationId", ((RemoteWebElement) target).getId()));
     }
 }
