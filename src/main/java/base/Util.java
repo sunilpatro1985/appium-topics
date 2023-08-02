@@ -148,4 +148,18 @@ public class Util {
     public static void dragNDrop_gesture(WebElement source, WebElement target) {
         ((JavascriptExecutor) AppDriver.getDriver()).executeScript("gesture: dragAndDrop", ImmutableMap.of("sourceId", ((RemoteWebElement) source).getId(), "destinationId", ((RemoteWebElement) target).getId()));
     }
+
+    public static void Drawing(WebElement drawPanel){
+
+        Point location = drawPanel.getLocation();
+        Dimension size = drawPanel.getSize();
+
+        Point pSource =  new Point(location.x + size.getWidth()/2
+                                    , location.y + 10);
+        Point pDest = new Point(location.x + size.getWidth()/2
+                , location.y + size.getHeight() - 10);
+
+        //The same way, try to identify the Points for horigental drawing
+        swipe(pSource, pDest, SCROLL_DUR);
+    }
 }
