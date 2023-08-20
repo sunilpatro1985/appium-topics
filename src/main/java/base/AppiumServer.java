@@ -3,6 +3,7 @@ package base;
 import io.appium.java_client.service.local.AppiumDriverLocalService;
 import io.appium.java_client.service.local.AppiumServiceBuilder;
 import io.appium.java_client.service.local.flags.GeneralServerFlag;
+import io.appium.java_client.service.local.flags.ServerArgument;
 
 import java.io.File;
 
@@ -13,12 +14,16 @@ public class AppiumServer {
     static void setInstance(){
         AppiumServiceBuilder builder = new AppiumServiceBuilder();
         builder
-                .withAppiumJS(new File("/usr/local/lib/node_modules/appium/build/lib/main.js"))
-                .usingDriverExecutable(new File("/usr/local/bin/node"))
+                //.withAppiumJS(new File("/usr/local/lib/node_modules/appium/build/lib/main.js"))
+                .withAppiumJS(new File("/Users/skpatro/.nvm/versions/node/v18.16.0/lib/node_modules/appium/build/lib/main.js"))
+                //.usingDriverExecutable(new File("/usr/local/bin/node"))
+                .usingDriverExecutable(new File("/Users/skpatro/.nvm/versions/node/v18.16.0/bin/node"))
                 .usingPort(4723)
                 .withArgument(GeneralServerFlag.LOCAL_TIMEZONE)
                 .withLogFile(new File("Appiumlog.txt"))
-                .withIPAddress("127.0.0.1");
+                .withIPAddress("127.0.0.1")
+                //.withArgument(GeneralServerFlag.USE_PLUGINS, "gestures")
+                .withArgument(GeneralServerFlag.ALLOW_INSECURE, "chromedriver_autodownload");
                 //.withArgument(GeneralServerFlag.BASEPATH, "wd/hub")
         server = AppiumDriverLocalService.buildService(builder);
         //server.start();

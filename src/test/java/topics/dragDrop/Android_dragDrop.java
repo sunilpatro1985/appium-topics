@@ -2,6 +2,7 @@ package topics.dragDrop;
 
 import base.AppDriver;
 import base.AppFactory;
+import base.AppiumServer;
 import base.Util;
 import com.google.common.collect.ImmutableMap;
 import io.appium.java_client.AppiumBy;
@@ -23,10 +24,10 @@ public class Android_dragDrop {
 
     @Test
     public static void DD_Test() throws InterruptedException, MalformedURLException, MalformedURLException {
-
+        AppiumServer.start();
         UiAutomator2Options options = new UiAutomator2Options();
         options.setDeviceName("emulator-5554")
-                .setPlatformVersion("13.0")
+                .setPlatformVersion("12.0")
                 //.setAppPackage("com.saucelabs.mydemoapp.rn")
                 //.setAppActivity(".MainActivity");
                 .setAppPackage("com.wdiodemoapp")
@@ -50,9 +51,10 @@ public class Android_dragDrop {
         RemoteWebElement source = (RemoteWebElement) wait.until(ExpectedConditions.elementToBeClickable(AppiumBy.accessibilityId("drag-l2")));
         RemoteWebElement destination = (RemoteWebElement) wait.until(ExpectedConditions.elementToBeClickable(AppiumBy.accessibilityId("drop-l2")));
 
-
+        Util.dragNDrop_gesture(source, destination);
         Thread.sleep(3000);
-        AppDriver.getDriver().quit();
 
+        AppDriver.getDriver().quit();
+        AppiumServer.stop();
     }
 }
